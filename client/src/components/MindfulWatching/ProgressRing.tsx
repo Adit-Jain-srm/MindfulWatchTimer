@@ -39,13 +39,39 @@ export default function ProgressRing({ progress, onClick }: ProgressRingProps) {
     if (progress < 0.7) return "stroke-primary-500";
     return "stroke-primary-600 animate-hueShift"; // Add animation for extended watching
   };
+  
+  // Filter effect for glowing appearance
+  const getFilterEffect = () => {
+    if (progress < 0.4) return "";
+    if (progress < 0.7) return "filter drop-shadow(0 0 1px rgba(59, 130, 246, 0.3))";
+    return "filter drop-shadow(0 0 2px rgba(59, 130, 246, 0.5))";
+  };
 
   return (
     <div 
       className="absolute z-10 inset-0 flex items-center justify-center cursor-pointer"
       onClick={onClick}
     >
-      <svg width={size} height={size} className="transform -rotate-90">
+      <svg 
+        width={size} 
+        height={size} 
+        className={cn(
+          "transform -rotate-90 transition-all duration-500", 
+          getFilterEffect()
+        )}
+      >
+        {/* Subtle glow effect for extended watching */}
+        {progress > 0.7 && (
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius + 2}
+            fill="transparent"
+            strokeWidth={1}
+            className="stroke-primary-400/30 animate-pulse"
+          />
+        )}
+        
         {/* Background circle */}
         <circle
           cx={size / 2}
@@ -53,7 +79,7 @@ export default function ProgressRing({ progress, onClick }: ProgressRingProps) {
           r={radius}
           fill="transparent"
           strokeWidth={strokeWidth}
-          className="stroke-gray-300 dark:stroke-gray-600"
+          className="stroke-gray-200 dark:stroke-gray-700"
         />
         
         {/* Progress arc */}
@@ -70,6 +96,19 @@ export default function ProgressRing({ progress, onClick }: ProgressRingProps) {
             "transition-all duration-500", 
             getColorClass()
           )}
+        />
+        
+        {/* Inner highlight for 3D effect */}
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius - strokeWidth/2}
+          fill="transparent"
+          strokeWidth={1}
+          strokeOpacity="0.2"
+          className="stroke-white dark:stroke-gray-300"
+          strokeDasharray={`${circumference * 0.25} ${circumference * 0.75}`}
+          strokeDashoffset={circumference * 0.85}
         />
       </svg>
     </div>

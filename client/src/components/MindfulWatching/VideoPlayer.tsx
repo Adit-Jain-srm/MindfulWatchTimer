@@ -36,9 +36,9 @@ export default function VideoPlayer({ video, watchTime, watchProgress }: VideoPl
   };
   
   return (
-    <div className="relative w-full max-w-md overflow-hidden rounded-lg shadow-lg shadow-animate bg-white dark:bg-gray-800 mb-4">
+    <div className="relative w-full overflow-hidden rounded-xl shadow-sm dark:shadow-gray-800/10 bg-white dark:bg-gray-800">
       {/* Video preview with controls */}
-      <div className="aspect-video bg-gray-200 dark:bg-gray-700 relative">
+      <div className="aspect-video bg-gray-100 dark:bg-gray-700 relative">
         {/* Video thumbnail */}
         <img 
           src={video.thumbnail} 
@@ -52,38 +52,67 @@ export default function VideoPlayer({ video, watchTime, watchProgress }: VideoPl
           watchProgress={watchProgress}
           isPlaying={isPlaying}
           onPlayPause={handlePlayPause}
+          video={video}
         />
+        
+        {/* Bottom progress bar - YouTube style */}
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200/30 dark:bg-gray-700/50">
+          <div 
+            className="h-full bg-gradient-to-r from-primary-400 to-primary-500 transition-all duration-300"
+            style={{ width: `${watchProgress * 100}%` }}
+          />
+        </div>
       </div>
       
       {/* Video information */}
       <div className="p-4">
-        <h2 className="font-semibold text-lg mb-1">{video.title}</h2>
-        <p className="text-gray-600 dark:text-gray-400 text-sm">{video.description}</p>
+        <h2 className="font-semibold text-lg mb-2 leading-snug tracking-tight line-clamp-2">{video.title}</h2>
         
-        <div className="flex justify-between items-center mt-3">
+        <div className="flex justify-between items-center mb-3">
+          {/* Video engagement metrics */}
+          <div className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center">
+              <Eye className="w-4 h-4 mr-1 text-gray-500 dark:text-gray-400" />
+              <span>{video.views}</span>
+            </div>
+            <div className="flex items-center">
+              <Heart className="w-4 h-4 mr-1 text-gray-500 dark:text-gray-400" />
+              <span>{video.likes}</span>
+            </div>
+          </div>
+          
+          {/* Action buttons - for aesthetics */}
+          <div className="flex items-center space-x-4">
+            <button className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+            </button>
+            <button className="text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        
+        <div className="pt-3 border-t border-gray-100 dark:border-gray-700/50">
           {/* Creator information */}
           <div className="flex items-center">
-            <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 overflow-hidden">
+            <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden shadow-sm">
               <img 
                 src={video.creatorAvatar} 
                 alt={`${video.creator} avatar`} 
                 className="w-full h-full object-cover"
               />
             </div>
-            <span className="ml-2 text-sm font-medium">{video.creator}</span>
+            <div className="ml-3">
+              <span className="text-sm font-medium">{video.creator}</span>
+              <p className="text-xs text-gray-500 dark:text-gray-500">Creator</p>
+            </div>
           </div>
           
-          {/* Video engagement metrics */}
-          <div className="flex items-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-            <div className="flex items-center">
-              <Eye className="w-4 h-4 mr-1" />
-              <span>{video.views}</span>
-            </div>
-            <div className="flex items-center">
-              <Heart className="w-4 h-4 mr-1" />
-              <span>{video.likes}</span>
-            </div>
-          </div>
+          <p className="text-gray-600 dark:text-gray-400 text-sm mt-3 leading-relaxed line-clamp-3">{video.description}</p>
         </div>
       </div>
     </div>

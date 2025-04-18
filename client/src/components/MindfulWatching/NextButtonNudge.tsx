@@ -30,29 +30,49 @@ interface NextButtonNudgeProps {
 export default function NextButtonNudge({ video, isLongWatching }: NextButtonNudgeProps) {
   return (
     <div className={cn(
-      "rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900",
-      "border border-gray-200 dark:border-gray-800",
-      "transition-all duration-500",
+      "rounded-xl overflow-hidden bg-white dark:bg-gray-800",
+      "border border-gray-100 dark:border-gray-700/50",
+      "transition-all duration-500 shadow-sm hover:shadow",
       isLongWatching && "animate-expand"
     )}>
       {/* Next video information */}
       <div className="flex items-center p-3">
-        {/* Thumbnail */}
-        <div className="w-16 h-16 rounded overflow-hidden flex-shrink-0">
+        {/* Thumbnail with duration tag */}
+        <div className="relative w-20 h-[70px] rounded-md overflow-hidden flex-shrink-0 shadow-sm">
           <img
             src={video.thumbnail}
             alt={`${video.title} thumbnail`}
             className="w-full h-full object-cover"
           />
+          
+          {/* Duration badge */}
+          <div className="absolute bottom-1 right-1 bg-black/75 text-white text-xs px-1 py-0.5 rounded text-[10px] font-medium">
+            {video.duration}
+          </div>
+          
+          {/* Play icon overlay */}
+          {isLongWatching && (
+            <div className={cn(
+              "absolute inset-0 bg-black/30 flex items-center justify-center",
+              "opacity-0 group-hover:opacity-100 transition-opacity"
+            )}>
+              <div className="bg-white/90 rounded-full p-1 shadow-sm animate-pulse">
+                <Play className="h-3 w-3 text-gray-800" />
+              </div>
+            </div>
+          )}
         </div>
         
         {/* Video details */}
         <div className="ml-3 flex-1 min-w-0">
-          <h4 className="font-medium text-sm text-gray-900 dark:text-gray-100 truncate">
+          <h4 className="font-medium text-sm text-gray-900 dark:text-gray-100 truncate leading-tight">
             {video.title}
           </h4>
           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">
-            {video.creator} • {video.views} views
+            {video.creator}
+          </p>
+          <p className="text-xs text-gray-400 dark:text-gray-500 truncate">
+            {video.views} views
           </p>
         </div>
         
@@ -61,15 +81,23 @@ export default function NextButtonNudge({ video, isLongWatching }: NextButtonNud
           size="sm"
           variant="ghost"
           className={cn(
-            "ml-2 rounded-full",
-            "bg-primary-100 hover:bg-primary-200",
-            "dark:bg-primary-900/20 dark:hover:bg-primary-900/40",
+            "ml-2 rounded-full h-9 w-9",
+            "bg-gradient-to-br from-primary-100 to-primary-200 hover:from-primary-200 hover:to-primary-300",
+            "dark:from-primary-900/20 dark:to-primary-900/30 dark:hover:from-primary-900/30 dark:hover:to-primary-900/40",
+            "shadow-sm",
             isLongWatching && "animate-pulse"
           )}
         >
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-5 w-5 text-primary-600 dark:text-primary-400" />
         </Button>
       </div>
+      
+      {/* Subtle watching indicator for long watching */}
+      {isLongWatching && (
+        <div className="h-0.5 w-full bg-gray-100 dark:bg-gray-700/30">
+          <div className="h-full bg-primary-400 dark:bg-primary-500 w-1/2 animate-pulse"></div>
+        </div>
+      )}
     </div>
   );
 }

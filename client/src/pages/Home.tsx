@@ -43,31 +43,36 @@ export default function Home() {
   const BREAK_DURATION = 120;
 
   return (
-    <div className="max-w-md mx-auto p-4 h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
+    <div className="max-w-md mx-auto h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 overflow-hidden">
       {/* Header with app title and theme toggle */}
       <AppHeader />
       
       {/* Main content area */}
-      <main className="flex-1 flex flex-col items-center justify-center">
+      <main className="flex-1 flex flex-col px-4 py-3 overflow-y-auto scrollbar-hide">
         {/* Primary video player with time-based UI elements */}
-        <VideoPlayer 
-          video={currentVideo}
-          watchTime={watchTime}
-          watchProgress={watchProgress}
-        />
+        <div className="mb-5">
+          <VideoPlayer 
+            video={currentVideo}
+            watchTime={watchTime}
+            watchProgress={watchProgress}
+          />
+        </div>
         
         {/* Related content section */}
-        <div className="w-full mt-4">
+        <div className="w-full">
           {/* Section header */}
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold">Continue Watching</h3>
-            <button className="text-primary-600 dark:text-primary-400 text-sm font-medium">
+          <div className="flex items-center justify-between mb-4 px-1">
+            <h3 className="font-semibold text-base tracking-tight">Continue Watching</h3>
+            <button className="text-primary-600 dark:text-primary-400 text-sm font-medium flex items-center">
               See All
+              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </button>
           </div>
           
           {/* Primary next video with nudge animation */}
-          <div className="mb-4">
+          <div className="mb-5">
             <NextButtonNudge 
               video={relatedVideos[0]}
               isLongWatching={isLongWatching}
@@ -75,7 +80,7 @@ export default function Home() {
           </div>
           
           {/* Additional related videos */}
-          <div className="space-y-2">
+          <div className="space-y-3 mb-5">
             {relatedVideos.slice(1).map((video) => (
               <RelatedVideo 
                 key={video.id}

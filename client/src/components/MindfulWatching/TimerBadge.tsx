@@ -45,13 +45,20 @@ export default function TimerBadge({ time, progress }: TimerBadgeProps) {
   return (
     <div 
       className={cn(
-        "absolute top-2 right-2 z-10",
-        "bg-black/70 text-white px-2 py-1 rounded-md",
-        "text-xs font-medium transition-opacity duration-1000",
+        "absolute top-3 right-3 z-10",
+        "bg-black/75 backdrop-blur-sm text-white px-2 py-1 rounded",
+        "text-xs font-medium transition-all duration-1000",
+        "shadow-sm border border-white/10",
         getOpacity()
       )}
     >
-      {formatTime(time)}
+      <span className="flex items-center">
+        {/* Small clock icon */}
+        <svg className="w-3 h-3 mr-1 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        {formatTime(time)}
+      </span>
     </div>
   );
 }
