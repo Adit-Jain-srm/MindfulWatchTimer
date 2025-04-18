@@ -11,3 +11,72 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Breathing animation for break timer */
+  @keyframes breatheIn {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(1.2);
+      opacity: 0.9;
+    }
+  }
+  
+  @keyframes breatheOut {
+    0% {
+      transform: scale(1.2);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(0.9);
+      opacity: 0.7;
+    }
+  }
+  
+  /* Color shift animation for progress ring */
+  @keyframes hueShift {
+    0% {
+      filter: hue-rotate(0deg);
+    }
+    50% {
+      filter: hue-rotate(45deg);
+    }
+    100% {
+      filter: hue-rotate(0deg);
+    }
+  }
+  
+  /* Expansion animation for next video nudge */
+  @keyframes expand {
+    0% {
+      padding: 0px;
+      margin: 0px;
+    }
+    100% {
+      padding: 4px;
+      margin: 4px 0;
+    }
+  }
+  
+  /* Box shadow animation for video player */
+  .shadow-animate {
+    transition: box-shadow 0.5s ease;
+  }
+  
+  .shadow-animate:hover {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  /* Animations for the break timer */
+  .animate-breatheIn {
+    animation: breatheIn 4s ease-in-out infinite;
+  }
+  
+  .animate-breatheOut {
+    animation: breatheOut 4s ease-in-out infinite;
+  }
+}

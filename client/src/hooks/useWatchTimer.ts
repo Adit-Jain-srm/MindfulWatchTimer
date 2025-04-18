@@ -5,8 +5,11 @@ interface UseWatchTimerReturn {
   watchProgress: number;
   showBreakPrompt: boolean;
   isLongWatching: boolean;
+  isOnBreak: boolean;
   handleDismissBreak: () => void;
   handleTakeBreak: () => void;
+  handleSkipBreak: () => void;
+  handleCompleteBreak: () => void;
   resetTimer: () => void;
 }
 
@@ -16,6 +19,8 @@ export default function useWatchTimer(): UseWatchTimerReturn {
   const [showBreakPrompt, setShowBreakPrompt] = useState(false);
   const [breakPromptShown, setBreakPromptShown] = useState(false);
   const [isLongWatching, setIsLongWatching] = useState(false);
+  const [isOnBreak, setIsOnBreak] = useState(false);
+  const [isTimerRunning, setIsTimerRunning] = useState(true);
 
   // For the demo, speed up time (1 second = 10 seconds of watching)
   // In a real app, this would be 1:1 with actual seconds
@@ -24,11 +29,13 @@ export default function useWatchTimer(): UseWatchTimerReturn {
   // Update time and progress
   useEffect(() => {
     const interval = setInterval(() => {
-      setWatchTime(prev => prev + timeMultiplier);
+      if (isTimerRunning && !isOnBreak) {
+        setWatchTime(prev => prev + timeMultiplier);
+      }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [timeMultiplier]);
+  }, [timeMultiplier, isTimerRunning, isOnBreak]);
 
   // Calculate progress based on watch time
   useEffect(() => {
@@ -55,11 +62,23 @@ export default function useWatchTimer(): UseWatchTimerReturn {
 
   const handleTakeBreak = useCallback(() => {
     setShowBreakPrompt(false);
-    // In a real app, you'd implement actual break functionality here
-    // For demo, we'll just reset the timer
+    setIsOnBreak(true);
+    setIsTimerRunning(false);
+  }, []);
+
+  const handleSkipBreak = useCallback(() => {
+    setIsOnBreak(false);
+    setIsTimerRunning(true);
+  }, []);
+
+  const handleCompleteBreak = useCallback(() => {
+    setIsOnBreak(false);
+    setIsTimerRunning(true);
+    // Reset the break prompt status so it can show up again after 20 minutes
+    setBreakPromptShown(false);
+    // Reset watch time to simulate fresh session after break
     setWatchTime(0);
     setWatchProgress(0);
-    setBreakPromptShown(false);
     setIsLongWatching(false);
   }, []);
 
@@ -69,6 +88,8 @@ export default function useWatchTimer(): UseWatchTimerReturn {
     setShowBreakPrompt(false);
     setBreakPromptShown(false);
     setIsLongWatching(false);
+    setIsOnBreak(false);
+    setIsTimerRunning(true);
   }, []);
 
   return {
@@ -76,8 +97,11 @@ export default function useWatchTimer(): UseWatchTimerReturn {
     watchProgress,
     showBreakPrompt,
     isLongWatching,
+    isOnBreak,
     handleDismissBreak,
     handleTakeBreak,
+    handleSkipBreak,
+    handleCompleteBreak,
     resetTimer
   };
 }

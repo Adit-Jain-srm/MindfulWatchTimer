@@ -3,6 +3,7 @@ import AppHeader from "@/components/MindfulWatching/AppHeader";
 import VideoPlayer from "@/components/MindfulWatching/VideoPlayer";
 import NextButtonNudge from "@/components/MindfulWatching/NextButtonNudge";
 import BreakPrompt from "@/components/MindfulWatching/BreakPrompt";
+import BreakTimer from "@/components/MindfulWatching/BreakTimer";
 import { videos, relatedVideos } from "@/data/videos";
 import useWatchTimer from "@/hooks/useWatchTimer";
 
@@ -14,8 +15,14 @@ export default function Home() {
     showBreakPrompt,
     handleDismissBreak,
     handleTakeBreak,
-    isLongWatching
+    isLongWatching,
+    isOnBreak,
+    handleSkipBreak,
+    handleCompleteBreak
   } = useWatchTimer();
+
+  // Duration of break in seconds (2 minutes)
+  const BREAK_DURATION = 120;
 
   return (
     <div className="max-w-md mx-auto p-4 h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
@@ -48,10 +55,21 @@ export default function Home() {
         </div>
       </main>
       
-      <BreakPrompt 
-        visible={showBreakPrompt} 
-        onDismiss={handleDismissBreak} 
-        onTakeBreak={handleTakeBreak} 
+      {/* Show break prompt only when not already on break */}
+      {!isOnBreak && (
+        <BreakPrompt 
+          visible={showBreakPrompt} 
+          onDismiss={handleDismissBreak} 
+          onTakeBreak={handleTakeBreak} 
+        />
+      )}
+      
+      {/* Break Timer */}
+      <BreakTimer 
+        visible={isOnBreak}
+        breakDuration={BREAK_DURATION}
+        onSkip={handleSkipBreak}
+        onComplete={handleCompleteBreak}
       />
     </div>
   );
