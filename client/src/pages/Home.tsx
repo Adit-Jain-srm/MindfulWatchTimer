@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AppHeader from "@/components/MindfulWatching/AppHeader";
 import VideoPlayer from "@/components/MindfulWatching/VideoPlayer";
 import NextButtonNudge from "@/components/MindfulWatching/NextButtonNudge";
@@ -25,6 +25,17 @@ import useWatchTimer from "@/hooks/useWatchTimer";
  */
 export default function Home() {
   const [currentVideo] = useState(videos[0]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Simulate loading videos with a delay 
+  // This would be a real API call in a production application
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+    
+    return () => clearTimeout(timer);
+  }, []);
   
   // Custom hook that manages all time-related states and handlers
   const { 
@@ -71,22 +82,59 @@ export default function Home() {
             </button>
           </div>
           
-          {/* Primary next video with nudge animation */}
+          {/* Primary next video with nudge animation or loading skeleton */}
           <div className="mb-5">
-            <NextButtonNudge 
-              video={relatedVideos[0]}
-              isLongWatching={isLongWatching}
-            />
+            {isLoading ? (
+              <div className="rounded-xl overflow-hidden bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700/50 shadow-sm animate-pulse">
+                <div className="p-3 flex items-center">
+                  {/* Thumbnail skeleton */}
+                  <div className="relative w-20 h-[70px] rounded-md bg-gray-200 dark:bg-gray-700 flex-shrink-0"></div>
+                  
+                  {/* Content skeleton */}
+                  <div className="ml-3 flex-1 space-y-2">
+                    <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/4"></div>
+                  </div>
+                  
+                  {/* Button skeleton */}
+                  <div className="h-9 w-9 rounded-full bg-gray-200 dark:bg-gray-700 ml-2"></div>
+                </div>
+              </div>
+            ) : (
+              <NextButtonNudge 
+                video={relatedVideos[0]}
+                isLongWatching={isLongWatching}
+              />
+            )}
           </div>
           
-          {/* Additional related videos */}
+          {/* Additional related videos or loading skeletons */}
           <div className="space-y-3 mb-5">
-            {relatedVideos.slice(1).map((video) => (
-              <RelatedVideo 
-                key={video.id}
-                video={video}
-              />
-            ))}
+            {isLoading ? (
+              /* Skeleton loaders for related videos */
+              [...Array(3)].map((_, index) => (
+                <div key={index} className="flex mb-3 rounded-lg overflow-hidden animate-pulse">
+                  {/* Thumbnail skeleton with shimmer effect */}
+                  <div className="relative w-24 h-16 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 animate-shimmer bg-[length:200%_100%]"></div>
+                  
+                  {/* Content skeleton */}
+                  <div className="p-2 flex-1 space-y-2">
+                    <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+                    <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              /* Actual related videos */
+              relatedVideos.slice(1).map((video) => (
+                <RelatedVideo 
+                  key={video.id}
+                  video={video}
+                />
+              ))
+            )}
           </div>
         </div>
       </main>
