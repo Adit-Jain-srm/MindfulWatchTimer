@@ -18,11 +18,22 @@ interface BreakPromptProps {
  * - Designed to be supportive rather than interrupting
  * 
  * FIGMA EXPORT NOTES:
- * - Create as a bottom-aligned notification card
- * - Use slide-up and fade-in animations for entrance
- * - Add interaction states for both buttons (Later and Take Break)
- * - Include hover states for the close button
- * - This component is a key transition point in the user journey flow
+ * - Create as a bottom-aligned notification card with these properties:
+ *   - Fixed position, bottom: 0, z-index: 50
+ *   - Background: white/95% with backdrop-blur-lg (frosted glass effect)
+ *   - Border: 1px solid with very light gray (border-gray-100) 
+ *   - Border radius: 0.75rem (rounded-xl)
+ *   - Left accent bar: 4px width, gradient from primary-400 to primary-600
+ * - Entrance animation:
+ *   - Initial state: translateY(16px), opacity: 0
+ *   - Final state: translateY(0), opacity: 1
+ *   - Duration: 500ms, ease-in-out timing
+ * - Button states:
+ *   - "Later" (outline variant): light gray border, gray text, hover: slightly darker
+ *   - "Take Break" (primary variant): gradient bg-gradient-to-r from primary-500 to primary-600
+ *   - Close button: transparent bg, rounded-full, hover: light gray bg
+ * - This component creates a key transition moment in the user flow - it should be
+ *   visually distinct but not disruptive to the video watching experience
  */
 export default function BreakPrompt({ visible, onDismiss, onTakeBreak }: BreakPromptProps) {
   if (!visible) return null;

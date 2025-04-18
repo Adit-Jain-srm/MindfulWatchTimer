@@ -22,11 +22,30 @@ interface VideoPlayerProps {
  * 
  * FIGMA EXPORT NOTES:
  * - This is the primary component that houses the video experience
- * - Create with a card-like appearance with rounded corners and subtle shadow
- * - The thumbnail image should use an aspect-video ratio
- * - Include all metadata sections: title, description, creator with avatar
- * - The embedded WatchControls component should be positioned as an overlay
- * - For the Figma prototype, include play/pause toggle states
+ * - Visual properties:
+ *   - Container: rounded-xl (border-radius: 0.75rem), shadow-sm
+ *   - Background: white (light mode) or gray-800 (dark mode)
+ *   - Video container maintains 16:9 aspect ratio (aspect-video)
+ *   - Duration badge: absolute position (bottom-2 right-2), bg-black/80, text-white
+ * - States to create:
+ *   1. Loading state: 
+ *      - Animated placeholder with floating circles and spinning progress indicator
+ *      - Loading text and bouncing play icon in center
+ *   2. Ready state:
+ *      - Thumbnail visible with duration badge
+ *      - Play controls overlay (semi-transparent with hover effects)
+ *   3. Playing state: 
+ *      - Same as ready but with pause icon instead of play
+ *      - Progress bar at bottom showing completion percentage
+ * - Hover effects:
+ *   - Hover on player shows play/pause icon overlay
+ *   - Progress ring scales slightly on hover
+ *   - Time display appears in bottom-right corner on hover
+ * - Metadata section below video:
+ *   - Title: 2 lines max, font-semibold
+ *   - Creator avatar: rounded-full with name beside it
+ *   - Engagement metrics with icons: views, likes
+ *   - Description: 3 lines max with truncation
  */
 export default function VideoPlayer({ video, watchTime, watchProgress }: VideoPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(true);

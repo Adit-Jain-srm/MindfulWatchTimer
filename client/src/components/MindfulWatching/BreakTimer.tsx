@@ -24,9 +24,17 @@ interface BreakTimerProps {
  * FIGMA EXPORT NOTES:
  * - Create as a full-screen modal overlay (backdrop-blur-md)
  * - The breathing animation requires two variants (inhale/exhale) with Smart Animate
+ *   - Inhale: Scale 0.9 → 1.2, opacity 0.7 → 0.9, duration 4s
+ *   - Exhale: Scale 1.2 → 0.9, opacity 0.9 → 0.7, duration 4s
  * - Progress ring should be created as a circular arc with varying stroke-dashoffset
- * - For Resume Watching button, create two states: disabled and enabled
- * - This component has two major states: active break and completed break
+ *   - Use a gradient stroke from primary-400 to primary-500
+ *   - Arc should decrease clockwise as the timer progresses
+ * - Resume button states: 
+ *   - Disabled (during active break): opacity 50%, no hover effect
+ *   - Enabled (after break complete): full opacity, hover effect
+ * - This component has two major visual states for Figma variants:
+ *   1. Active Break: Countdown active, breathing animation, disabled resume button
+ *   2. Completed Break: "Great job!" title, enabled resume button, no breathing animation
  */
 export default function BreakTimer({ 
   visible, 

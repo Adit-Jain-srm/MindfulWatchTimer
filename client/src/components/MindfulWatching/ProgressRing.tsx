@@ -18,12 +18,28 @@ interface ProgressRingProps {
  * of extended screen time.
  * 
  * FIGMA EXPORT NOTES:
- * - Create as a circular progress indicator with at least 3 variants:
- *   1. Early watching (< 40% progress): light teal color
- *   2. Mid watching (40-70% progress): medium teal color
- *   3. Extended watching (> 70% progress): darker teal with hue-shift animation
- * - Create the animation using multiple keyframes with filter: hue-rotate()
- * - The progress arc should be drawn using SVG stroke-dasharray and stroke-dashoffset
+ * - Create as a circular progress indicator with these specifications:
+ *   - Default size: 80px (can be parameterized)
+ *   - Stroke width: 3px
+ *   - Background circle: light gray (stroke-gray-200 in light mode, stroke-gray-700 in dark)
+ * - Create these visual states as variants in Figma:
+ *   1. Early watching (< 40% progress): 
+ *      - Progress arc color: stroke-primary-400 (light teal)
+ *      - No glow effect or animation
+ *   2. Mid watching (40-70% progress): 
+ *      - Progress arc color: stroke-primary-500 (medium teal)
+ *      - Light glow/drop-shadow effect
+ *   3. Extended watching (> 70% progress): 
+ *      - Progress arc color: stroke-primary-600 (darker teal)
+ *      - Animated hue-shift using filter: hue-rotate() keyframes
+ *      - Animation timing: 10s infinite, 0° → 45° → 0°
+ *      - Subtle pulsing outer circle with animiate-pulse
+ * - Technical implementation notes:
+ *   - Arc progress uses SVG stroke-dasharray and stroke-dashoffset
+ *   - Starting position is at 12 o'clock (-90° rotation)
+ *   - Inner highlight creates 3D effect with partial white stroke
+ *   - Progress ring should respond to user clicks (propagates to parent)
+ * - This element is a critical mindfulness indicator and should be prominently visible
  */
 export default function ProgressRing({ progress, onClick }: ProgressRingProps) {
   // SVG parameters

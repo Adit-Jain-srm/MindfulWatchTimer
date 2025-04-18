@@ -20,12 +20,28 @@ interface NextButtonNudgeProps {
  * to switch videos after extended viewing of the same content.
  * 
  * FIGMA EXPORT NOTES:
- * - Create two variants of this component:
- *   1. Normal state (isLongWatching=false): Standard appearance
- *   2. Nudge state (isLongWatching=true): Expanded with padding and pulsing next button
- * - Use Smart Animate between these states to show the expansion effect
- * - The Next button should have a subtle pulse animation in the expanded state
- * - This component is crucial for showing the subtle UI changes during extended viewing
+ * - Create two main variants of this component:
+ *   1. Normal state (isLongWatching=false): 
+ *      - Standard appearance, no animation
+ *      - Shows thumbnail, title, creator info
+ *      - Next button is static
+ *   2. Nudge state (isLongWatching=true): 
+ *      - Expanded with padding: padding: 4px, margin: 4px 0
+ *      - Pulsing next button (animate-pulse)
+ *      - Active progress bar at bottom (w-1/2 animated)
+ *      - Play icon overlay on thumbnail (with animate-pulse)
+ * - Visual properties:
+ *   - Container: rounded-xl, bg-white/dark:bg-gray-800
+ *   - Border: light gray border (border-gray-100/dark:border-gray-700/50)
+ *   - Thumbnail: w-20 h-[70px], rounded-md with absolute duration badge
+ *   - Next button: rounded-full with gradient background
+ *   - Progress bar: 0.5px height, gradient from primary-400 to primary-500
+ * - Animation specifications:
+ *   - Expansion keyframes: padding/margin 0px → 4px over 0.5s
+ *   - Next button pulse: subtle scale animation (1.0-1.05) with opacity change
+ *   - Progress indicator: pulse animation with 50% width
+ * - Smart animate between the two states to show the transition when watching time exceeds threshold
+ * - This component is a key visual cue for encouraging content variety during long sessions
  */
 export default function NextButtonNudge({ video, isLongWatching }: NextButtonNudgeProps) {
   return (

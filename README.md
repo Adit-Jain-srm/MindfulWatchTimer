@@ -2,6 +2,25 @@
 
 This prototype was built for the 'Mindful Watching' UI/UX design challenge. It presents a video streaming interface with time-based UI components that subtly encourage breaks during extended viewing sessions, promoting digital wellbeing without interrupting the user experience.
 
+## Challenge Overview
+
+The "Mindful Watching" UI/UX design challenge focuses on creating a more conscious video consumption experience by addressing these key aspects:
+
+- **Problem**: Extended screen time without breaks can lead to eye strain, reduced concentration, and digital fatigue
+- **Goal**: Design a video interface that encourages healthier viewing habits without disrupting the viewing experience
+- **Approach**: Use subtle, time-based UI changes and gentle nudges rather than forceful interruptions
+- **Target Experience**: Create a supportive experience that feels like a mindful companion rather than an authoritarian timer
+
+## Key Design Innovations
+
+The prototype demonstrates several innovative UI/UX approaches to promoting mindful watching:
+
+1. **Progressive Disclosure** - Interface changes gradually reveal themselves as viewing time increases
+2. **Non-Disruptive Notifications** - Break suggestions appear as optional prompts without pausing content
+3. **Visual Time Indicators** - Color shifts and animations subtly communicate extended viewing time
+4. **Guided Break Experience** - Breathing exercise during breaks provides a restorative moment
+5. **Content Variety Encouragement** - "Next video" suggestions become more prominent over time
+
 ## UI States and User Journey
 
 The application follows a progressive disclosure approach with distinct visual states that guide the user through a mindful watching experience:
@@ -71,7 +90,7 @@ The application follows a progressive disclosure approach with distinct visual s
 ### Figma Implementation Notes
 
 #### Component Structure
-Each UI component has been designed to be self-contained for easy Figma replication:
+Each UI component has been designed to be self-contained for easy Figma replication. Detailed export notes are included as comments in each component file:
 
 ```
 MindfulWatching/
@@ -99,6 +118,39 @@ To recreate the flow in Figma:
    - Set up a back-and-forth interaction with Smart Animate
 4. For glass-morphism effects:
    - Use a semi-transparent background with blur effect (backdrop-filter in CSS)
+
+#### Special Figma Export Considerations
+
+All components include detailed `FIGMA EXPORT NOTES` comments with specific implementation details:
+
+**VideoPlayer** - Create three states (loading, ready, playing) with thumbnail overlay and proper 16:9 aspect ratio. Metadata section should use line clamping for text.
+
+**ProgressRing** - Create three variant states based on progress percentage with increasingly noticeable visual feedback. Use proper SVG arc implementation with stroke-dasharray/dashoffset.
+
+**BreakPrompt** - Implement as a bottom notification with left accent bar, frosted glass effect, and entrance animation that slides up from bottom.
+
+**BreakTimer** - Create as full-screen overlay with breathing animation using Smart Animate between inhale/exhale states (4s duration). Implement two variants for in-progress and completed states.
+
+**NextButtonNudge** - Create two variants (normal and expanded) that transition when watching time exceeds threshold. Expanded state includes subtle animations and progress indicator.
+
+#### Effects and Animations
+
+For precise animation recreation in Figma:
+
+1. **Breathing animation**:
+   - Scale: 0.9 → 1.2 and back
+   - Opacity: 0.7 → 0.9 and back
+   - Duration: 4 seconds per cycle
+
+2. **Frosted glass effects**:
+   - Background: Semi-transparent white/gray (95% opacity)
+   - Blur: 12px backdrop blur
+   - Border: 1px light gray
+
+3. **Progress indicators**:
+   - Circular progress: Arc grows clockwise, color intensifies
+   - Linear progress: Gradient-filled bar grows horizontally
+   - Color shifts: Use hue-rotate filter animation
 
 ## Time-Based Features Implementation
 

@@ -46,7 +46,7 @@ export default function WatchControls({
           {/* Play/Pause icon */}
           <button 
             onClick={onPlayPause}
-            className="absolute inset-0 flex items-center justify-center bg-white/90 dark:bg-gray-800/90 rounded-full h-14 w-14 shadow-md backdrop-blur-sm hover:shadow-lg transition-all duration-200"
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center justify-center bg-white/90 dark:bg-gray-800/90 rounded-full h-14 w-14 shadow-md backdrop-blur-sm hover:shadow-lg transition-all duration-200"
             aria-label={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? (
