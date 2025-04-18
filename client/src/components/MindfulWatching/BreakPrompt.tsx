@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Timer } from "lucide-react";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface BreakPromptProps {
@@ -8,61 +8,66 @@ interface BreakPromptProps {
   onTakeBreak: () => void;
 }
 
+/**
+ * BreakPrompt component
+ * 
+ * Displays a non-intrusive notification suggesting a break:
+ * - Appears after extended viewing (typically 20 minutes)
+ * - Offers options to take a break or continue watching
+ * - Uses subtle entrance animation
+ * - Designed to be supportive rather than interrupting
+ */
 export default function BreakPrompt({ visible, onDismiss, onTakeBreak }: BreakPromptProps) {
-  const [isVisible, setIsVisible] = useState(false);
-  
-  // Auto-dismiss after 10 seconds
-  useEffect(() => {
-    let timeoutId: number;
-    
-    if (visible && !isVisible) {
-      setIsVisible(true);
-    } else if (!visible && isVisible) {
-      timeoutId = window.setTimeout(() => {
-        setIsVisible(false);
-      }, 300); // Match transition duration
-    }
-    
-    // Auto-dismiss after 10 seconds
-    if (visible) {
-      timeoutId = window.setTimeout(() => {
-        onDismiss();
-      }, 10000);
-    }
-    
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [visible, isVisible, onDismiss]);
+  if (!visible) return null;
   
   return (
-    <div 
-      className={cn(
-        "fixed bottom-0 left-0 right-0 transform transition-all duration-300 p-4 z-50",
-        isVisible ? "translate-y-0 opacity-100 pointer-events-auto" : "translate-y-full opacity-0 pointer-events-none"
-      )}
-    >
-      <div className="max-w-md mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg px-4 py-3 flex items-center justify-between border-l-4 border-primary-600 dark:border-primary-500">
-        <div className="flex items-center">
-          <Timer className="text-primary-600 dark:text-primary-400 mr-3 h-5 w-5" />
-          <p className="text-sm font-medium">
-            You've been watching for 20 minutes. Time for a short break?
+    <div className={cn(
+      "fixed bottom-0 left-0 right-0 z-50",
+      "p-4 mx-auto max-w-md",
+      "transform transition-all duration-500 ease-in-out",
+      "animate-in fade-in slide-in-from-bottom-4"
+    )}>
+      <div className={cn(
+        "bg-white dark:bg-gray-800 rounded-lg shadow-xl",
+        "p-4 border border-gray-200 dark:border-gray-700",
+        "flex items-center justify-between"
+      )}>
+        <div className="flex-1">
+          <h3 className="font-medium text-gray-900 dark:text-gray-100">
+            Time for a break?
+          </h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            You've been watching for a while. A short break might be refreshing.
           </p>
         </div>
-        <div className="flex items-center space-x-2 ml-2">
-          <button 
-            onClick={onDismiss} 
-            className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white transition-colors"
+        
+        <div className="flex items-center space-x-2 ml-4">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={onDismiss}
+            className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           >
             Later
-          </button>
-          <button 
-            onClick={onTakeBreak} 
-            className="text-sm font-medium text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors"
+          </Button>
+          
+          <Button 
+            variant="default" 
+            size="sm" 
+            onClick={onTakeBreak}
+            className="bg-primary-500 hover:bg-primary-600 text-white"
           >
             Take Break
-          </button>
+          </Button>
         </div>
+        
+        <button 
+          className="absolute top-2 right-2 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400" 
+          onClick={onDismiss}
+          aria-label="Close"
+        >
+          <X className="h-4 w-4" />
+        </button>
       </div>
     </div>
   );
