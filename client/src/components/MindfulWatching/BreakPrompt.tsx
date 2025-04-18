@@ -16,6 +16,13 @@ interface BreakPromptProps {
  * - Offers options to take a break or continue watching
  * - Uses subtle entrance animation
  * - Designed to be supportive rather than interrupting
+ * 
+ * FIGMA EXPORT NOTES:
+ * - Create as a bottom-aligned notification card
+ * - Use slide-up and fade-in animations for entrance
+ * - Add interaction states for both buttons (Later and Take Break)
+ * - Include hover states for the close button
+ * - This component is a key transition point in the user journey flow
  */
 export default function BreakPrompt({ visible, onDismiss, onTakeBreak }: BreakPromptProps) {
   if (!visible) return null;

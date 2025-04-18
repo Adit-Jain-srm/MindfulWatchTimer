@@ -1,81 +1,113 @@
 # Mindful Watching Prototype
 
-This prototype was built for the 'Mindful Watching' design challenge. The break-taking feature includes a full-screen 2-minute timer, gentle breathing animation, and session-based logic. Ideal for matching flows in Figma prototyping tools using Web-to-Figma design translation.
+This prototype was built for the 'Mindful Watching' UI/UX design challenge. It presents a video streaming interface with time-based UI components that subtly encourage breaks during extended viewing sessions, promoting digital wellbeing without interrupting the user experience.
 
-## Features
+## UI States and User Journey
 
-### Visual Components
+The application follows a progressive disclosure approach with distinct visual states that guide the user through a mindful watching experience:
 
-The application includes the following key visual components and states:
+### 1. Normal Watch Mode (0-20 minutes)
+- **Primary elements**: Video player, play/pause button, progress ring, timer badge
+- **Visual characteristics**: Clean interface, minimal distractions
+- **Interaction pattern**: Standard video controls with subtle time indicators
+- **Key component**: `VideoPlayer.tsx` with embedded `WatchControls.tsx`
 
-1. **Normal Watch Mode**
-   - Video player with thumbnail and controls
-   - Progress ring surrounding play button (shifts color based on watch duration)
-   - Timer badge (gradually fades as watch time increases)
-   - Related videos section with subtle animations
+### 2. Extended Watch Mode (20+ minutes)
+- **Primary elements**: All normal elements + subtly highlighted "next video" suggestion
+- **Visual characteristics**: Progress ring begins color shift animation, timer badge fades
+- **Interaction pattern**: Gentle suggestion to potentially switch content
+- **Key component**: `NextButtonNudge.tsx` with `animate-expand` class
 
-2. **Break Prompt**
-   - Non-intrusive snackbar that appears after 20 minutes of viewing
-   - Contains actionable buttons: "Later" and "Take Break"
-   - Subtle entrance and exit animations
+### 3. Break Suggestion (Triggered at 20 minute threshold)
+- **Primary elements**: Non-modal notification with action buttons
+- **Visual characteristics**: Subtle entrance animation, supportive messaging
+- **Interaction pattern**: Optional interaction with two clear choices
+- **Key component**: `BreakPrompt.tsx` with entrance animations
 
-3. **Active Break Timer**
-   - Full-screen overlay with glass morphism effect
-   - Circular countdown timer with progress ring
-   - Pulsing "breathing" animation to encourage mindful breathing
-   - Timer display showing remaining break time
+### 4. Active Break Mode
+- **Primary elements**: Full-screen overlay, breathing circle animation, countdown timer
+- **Visual characteristics**: Calming colors, reduced visual complexity, focus on breathing
+- **Interaction pattern**: Guided breathing with visual pulsing, minimal interactions
+- **Key component**: `BreakTimer.tsx` with `animate-breatheIn`/`animate-breatheOut` classes
 
-4. **Resume State**
-   - "Resume Watching" button becomes active after break completion
-   - "Skip Break" option for users who want to continue immediately
-   - Smooth transitions between states
+### 5. Post-Break Resume State
+- **Primary elements**: Same as break mode but with active "Resume Watching" button
+- **Visual characteristics**: Visual indication that break is complete 
+- **Interaction pattern**: Clear call-to-action to resume content
+- **Key component**: `BreakTimer.tsx` with timer completion state
 
-### Interaction Flow
+## Design System & Figma Export Notes
 
-1. User begins watching video content
-2. After 20 minutes of continuous viewing:
-   - Break prompt appears, suggesting a short pause
-3. If user selects "Take Break":
-   - Break timer screen appears with 2-minute countdown
-   - Breathing animation guides mindful breathing
-4. After 2 minutes:
-   - "Resume Watching" button becomes active
-   - User returns to content with fresh watch timer
+### Colors
+- **Primary**: `oklch(65% 0.2 180)` - A calming teal that supports the mindfulness theme
+- **Progress states**:
+  - Early watching: `primary-400` (lighter teal)
+  - Mid watching: `primary-500` (medium teal)
+  - Extended watching: `primary-600` with hue-shift animation
 
-## Technical Implementation
+### Typography
+- **Font family**: System font stack through Tailwind's `font-sans`
+- **Hierarchy**:
+  - Main headings: `font-semibold text-lg`
+  - Secondary text: `text-sm text-gray-600 dark:text-gray-400`
+  - UI elements: `text-xs font-medium`
 
-### Component Structure
+### Animations & Timing
+- **Time scaling**: For demo purposes, time is accelerated (1 real second = 10 video seconds)
+- **Key thresholds**:
+  - Break prompt: 20 minutes (1200 seconds)
+  - Extended watching UI changes: 30 minutes (1800 seconds)
+  - Break duration: 2 minutes (120 seconds)
+- **Animation durations**:
+  - Breathing cycle: 4 seconds per inhale/exhale
+  - Color shifts: 10 seconds
+  - UI transitions: 300-500ms
 
-- `AppHeader.tsx`: Navigation and theme toggle
-- `VideoPlayer.tsx`: Main video player with progress indicators
-- `ProgressRing.tsx`: Circular progress indicator for watch time
-- `TimerBadge.tsx`: Watch session timer display
-- `NextButtonNudge.tsx`: Related video component with expansion animation
-- `BreakPrompt.tsx`: Notification suggesting a break
-- `BreakTimer.tsx`: Full-screen break timer with breathing animation
+### Layout & Spacing
+- **Container width**: `max-w-md` (448px) - Mobile-first design
+- **Border radius**: `radius: 0.75` in theme.json
+- **Spacing scale**: Standard Tailwind spacing scale
 
-### Animation System
+### Figma Implementation Notes
 
-The prototype uses Tailwind CSS with custom animations defined in:
-- `index.css`: Custom keyframes and utility classes
-- `tailwind.config.ts`: Animation durations and timing functions
+#### Component Structure
+Each UI component has been designed to be self-contained for easy Figma replication:
 
-### Theme Configuration
+```
+MindfulWatching/
+├── AppHeader.tsx         // App title and theme toggle
+├── VideoPlayer.tsx       // Main video container with timing elements
+├── WatchControls.tsx     // Play button and progress indicators
+├── ProgressRing.tsx      // Color-shifting progress indicator
+├── TimerBadge.tsx        // Watch time display with fading
+├── NextButtonNudge.tsx   // Expanding "Next" suggestion
+├── RelatedVideo.tsx      // Standard video suggestion item
+├── BreakPrompt.tsx       // Break suggestion notification
+└── BreakTimer.tsx        // Full-screen break experience
+```
 
-Colors and styles are defined in:
-- `theme.json`: Primary color and theme settings
-- `tailwind.config.ts`: Extended color palette and design tokens
+#### Creating Interactive Prototypes
+To recreate the flow in Figma:
 
-## Figma Export Guidelines
+1. Create separate frames for each of the 5 major UI states
+2. For the time-based animations:
+   - Use Smart Animate between variants of the progress ring
+   - Create variants for each opacity level of the timer badge
+   - Use interactive components with hover/pressed states
+3. For the breathing animation:
+   - Create two variants of the breathing circle (expanded/contracted)
+   - Set up a back-and-forth interaction with Smart Animate
+4. For glass-morphism effects:
+   - Use a semi-transparent background with blur effect (backdrop-filter in CSS)
 
-For designers recreating this in Figma:
+## Time-Based Features Implementation
 
-1. Create separate frames for each visual state
-2. Use Smart Animate for transitions between states
-3. Match the color tokens from theme.json
-4. Implement the breathing animation using Figma's Smart Animate feature
-5. Ensure all interactive elements have hover/active states
-6. Mirror the glass-morphism effect for the break timer overlay
+The core timing logic is implemented in `useWatchTimer.ts` which manages:
+
+- Watch time tracking
+- Threshold detection for UI changes
+- Transition between states (normal → extended → break)
+- Break completion and timer reset
 
 ## Running the Project
 

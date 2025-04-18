@@ -18,6 +18,14 @@ interface NextButtonNudgeProps {
  * 
  * The expansion animation serves as a subtle encouragement
  * to switch videos after extended viewing of the same content.
+ * 
+ * FIGMA EXPORT NOTES:
+ * - Create two variants of this component:
+ *   1. Normal state (isLongWatching=false): Standard appearance
+ *   2. Nudge state (isLongWatching=true): Expanded with padding and pulsing next button
+ * - Use Smart Animate between these states to show the expansion effect
+ * - The Next button should have a subtle pulse animation in the expanded state
+ * - This component is crucial for showing the subtle UI changes during extended viewing
  */
 export default function NextButtonNudge({ video, isLongWatching }: NextButtonNudgeProps) {
   return (

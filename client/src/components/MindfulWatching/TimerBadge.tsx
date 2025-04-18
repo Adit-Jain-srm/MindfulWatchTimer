@@ -15,6 +15,16 @@ interface TimerBadgeProps {
  * 
  * The opacity fading serves as a subtle reminder of
  * prolonged viewing sessions without being intrusive.
+ * 
+ * FIGMA EXPORT NOTES:
+ * - Create as a small badge in top-right corner of the video player
+ * - Create at least 4 variants with different opacity levels:
+ *   1. 0-40% progress: opacity-100 (fully visible)
+ *   2. 40-70% progress: opacity-80 (slightly faded)
+ *   3. 70-90% progress: opacity-60 (more faded)
+ *   4. 90-100% progress: opacity-40 (significantly faded)
+ * - The time format should be MM:SS (e.g., "10:45")
+ * - Use consistent semi-transparent black background for light/dark compatibility
  */
 export default function TimerBadge({ time, progress }: TimerBadgeProps) {
   // Convert seconds to MM:SS format

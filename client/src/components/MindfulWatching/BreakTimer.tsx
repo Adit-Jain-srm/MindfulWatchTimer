@@ -20,6 +20,13 @@ interface BreakTimerProps {
  * 
  * This component represents the active break state in the user journey,
  * providing a calming, guided break experience.
+ * 
+ * FIGMA EXPORT NOTES:
+ * - Create as a full-screen modal overlay (backdrop-blur-md)
+ * - The breathing animation requires two variants (inhale/exhale) with Smart Animate
+ * - Progress ring should be created as a circular arc with varying stroke-dashoffset
+ * - For Resume Watching button, create two states: disabled and enabled
+ * - This component has two major states: active break and completed break
  */
 export default function BreakTimer({ 
   visible, 

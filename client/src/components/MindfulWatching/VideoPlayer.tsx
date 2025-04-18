@@ -19,6 +19,14 @@ interface VideoPlayerProps {
  * - Engagement metrics (views, likes)
  * 
  * This component represents the normal watching state in the user journey.
+ * 
+ * FIGMA EXPORT NOTES:
+ * - This is the primary component that houses the video experience
+ * - Create with a card-like appearance with rounded corners and subtle shadow
+ * - The thumbnail image should use an aspect-video ratio
+ * - Include all metadata sections: title, description, creator with avatar
+ * - The embedded WatchControls component should be positioned as an overlay
+ * - For the Figma prototype, include play/pause toggle states
  */
 export default function VideoPlayer({ video, watchTime, watchProgress }: VideoPlayerProps) {
   const [isPlaying, setIsPlaying] = useState(true);

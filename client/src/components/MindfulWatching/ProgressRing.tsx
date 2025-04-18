@@ -16,6 +16,14 @@ interface ProgressRingProps {
  * The hue-shift animation becomes more noticeable as the
  * watching session extends, serving as a gentle reminder
  * of extended screen time.
+ * 
+ * FIGMA EXPORT NOTES:
+ * - Create as a circular progress indicator with at least 3 variants:
+ *   1. Early watching (< 40% progress): light teal color
+ *   2. Mid watching (40-70% progress): medium teal color
+ *   3. Extended watching (> 70% progress): darker teal with hue-shift animation
+ * - Create the animation using multiple keyframes with filter: hue-rotate()
+ * - The progress arc should be drawn using SVG stroke-dasharray and stroke-dashoffset
  */
 export default function ProgressRing({ progress, onClick }: ProgressRingProps) {
   // SVG parameters
