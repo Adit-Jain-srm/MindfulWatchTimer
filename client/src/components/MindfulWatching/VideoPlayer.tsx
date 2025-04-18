@@ -35,16 +35,55 @@ export default function VideoPlayer({ video, watchTime, watchProgress }: VideoPl
     setIsPlaying(prev => !prev);
   };
   
+  const [isLoading, setIsLoading] = useState(true);
+  
   return (
     <div className="relative w-full overflow-hidden rounded-xl shadow-sm dark:shadow-gray-800/10 bg-white dark:bg-gray-800">
       {/* Video preview with controls */}
-      <div className="aspect-video bg-gray-100 dark:bg-gray-700 relative">
-        {/* Video thumbnail */}
+      <div className="aspect-video bg-gray-100 dark:bg-gray-700 relative overflow-hidden shadow-md group touch-manipulation">
+        {/* Skeleton loader for image loading state */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse flex items-center justify-center">
+            <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+        )}
+        
+        {/* Video thumbnail - positioned absolutely to maintain aspect ratio */}
         <img 
           src={video.thumbnail} 
           alt={`${video.title} thumbnail`} 
-          className="w-full h-full object-cover"
+          onLoad={() => setIsLoading(false)}
+          className="absolute inset-0 w-full h-full object-cover"
         />
+        
+        {/* Duration badge (YouTube-style) */}
+        <div className="absolute bottom-2 right-2 bg-black/80 text-white text-xs px-1.5 py-0.5 rounded font-medium z-10">
+          {video.duration}
+        </div>
+        
+        {/* Play/Pause hover overlay */}
+        <div 
+          className="absolute inset-0 bg-black/10 opacity-0 hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+          onClick={handlePlayPause}
+        >
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="bg-black/60 rounded-full p-4 transform transition-transform duration-300 hover:scale-110">
+              {isPlaying ? (
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              ) : (
+                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              )}
+            </div>
+          </div>
+        </div>
         
         {/* Watch controls overlay */}
         <WatchControls 
